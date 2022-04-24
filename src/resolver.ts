@@ -12,8 +12,10 @@ export function isSpec(file) {
 
 export function codeToSpec(file) {
 	var viewRegex = /erb$|haml$|slim$/
+	var controllerRegex = /controllers/
 	var isViewFile = file.match(viewRegex);
-	
+	var isControllerFile = file.match(controllerRegex);
+
 	if (isViewFile) {
 		return file
 			.replace('/app/', '/spec/')
@@ -21,22 +23,28 @@ export function codeToSpec(file) {
 			.replace('.erb', '.erb_spec.rb')
 			.replace('.slim', '.slim_spec.rb');
 	}
-	
+
+	if (isControllerFile) {
+		file = file.replace('/controllers/', '/requests/');
+	}
+
 	file = file.replace('.rb', '_spec.rb');
-	
+
 	var isLibFile = file.indexOf('/lib/') > -1;
 	if (isLibFile) {
 		return file.replace('/lib/', '/spec/lib/');
 	}
-	
+
 	return file.replace('/app/', '/spec/');
 }
 
 export function specToCode(file: string) {
-
+	var controllerRegex = /requests/
 	var viewRegex = /(.erb|.haml|.slim)_spec.rb$/;
-	
+
 	var isViewFile = file.match(viewRegex);
+	var isControllerFile = file.match(controllerRegex);
+
 	if (isViewFile) {
 		return file
 			.replace('_spec.rb', '')
@@ -44,6 +52,10 @@ export function specToCode(file: string) {
 	}
 
 	file = file.replace('_spec.rb', '.rb');
+
+	if (isControllerFile) {
+		file = file.replace('/requests/', '/controllers/')
+	}
 
 	var isLibFile = file.indexOf('/spec/lib/') > -1;
 	if (isLibFile) {

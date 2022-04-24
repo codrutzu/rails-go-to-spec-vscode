@@ -23,6 +23,10 @@ var testCases = [
 		'/spec/lib/something/foo_spec.rb',
 		'/lib/something/foo.rb',
 	],
+	[
+		'/spec/requests/api/v1/admin/users_controller_spec.rb',
+		'/app/controllers/api/v1/admin/users_controller.rb',
+	],
 ]
 
 test("isSpec", (t) => {
@@ -42,7 +46,11 @@ test("isSpec", (t) => {
 		[
 			'/spec/views/something.html.erb.rb',
 			false,
-		]
+		],
+		[
+			'/spec/requests/something_controller_spec.rb',
+			true,
+		],
 	]
 	t.plan(testCases.length);
 
